@@ -2,6 +2,7 @@ package com.merteroglu.unsplashandgooglemaps;
 
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.media.Image;
 import android.os.Bundle;
@@ -22,6 +23,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.merteroglu.unsplashandgooglemaps.Models.Images;
 
 import java.lang.reflect.Field;
@@ -32,7 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback , GoogleMap.OnPolylineClickListener{
 
     private String API_URL = "https://api.unsplash.com/";
 
@@ -47,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     ViewPageAdapter adapter;
     int pagerIndex = 0;
+
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        getImages();
+
+
         Button btnTest = findViewById(R.id.testButton);
 
         btnTest.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
 
 
     }
@@ -137,8 +156,55 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
+
+
+                for (int i = 0; i < imageList.size() ; i++) {
+                    if(imageList.get(i).getLocation() == null){
+                        imageList.remove(i);
+                        i--;
+                    }else if(imageList.get(i).getLocation().getPosition() == null){
+                        imageList.remove(i);
+                        i--;
+                    }
+                }
+
+                if(imageList.size() == 0){
+                    mDialog.dismiss();
+                    return;
+                }
+
                 adapter = new ViewPageAdapter(MainActivity.this,imageList);
                 viewPager.setAdapter(adapter);
+
+                for (int i = 0; i < imageList.size() ; i++) {
+                    Double lat,lng;
+                    lat = Double.parseDouble(imageList.get(i).getLocation().getPosition().getLatitude());
+                    lng = Double.parseDouble(imageList.get(i).getLocation().getPosition().getLongitude());
+                          mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(lat,lng))
+                                .title(imageList.get(i).getLocation().getTitle()));
+                }
+
+                for (int i = 0; i < imageList.size() -1 ; i++) {
+                    Double lat = Double.parseDouble(imageList.get(i).getLocation().getPosition().getLatitude());
+                    Double lng = Double.parseDouble(imageList.get(i).getLocation().getPosition().getLongitude());
+                    Double lat2 = Double.parseDouble(imageList.get(i + 1).getLocation().getPosition().getLatitude());
+                    Double lng2 = Double.parseDouble(imageList.get(i + 1).getLocation().getPosition().getLongitude());
+                    Polyline line = mMap.addPolyline(new PolylineOptions()
+                            .add(new LatLng(lat, lng), new LatLng(lat2, lng2))
+                            .width(5)
+                            .color(Color.RED));
+                    line.setClickable(true);
+
+                    if (i == imageList.size() - 2) {
+                        Polyline linex = mMap.addPolyline(new PolylineOptions()
+                                .add(new LatLng(lat2 ,lng2 ), new LatLng(Double.parseDouble(imageList.get(0).getLocation().getPosition().getLatitude()), Double.parseDouble(imageList.get(i + 1).getLocation().getPosition().getLongitude())))
+                                .width(5)
+                                .color(Color.RED));
+                        linex.setClickable(true);
+                    }
+
+                }
 
 
                mDialog.dismiss();
@@ -148,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Images>> call, Throwable t) {
+                mDialog.dismiss();
                 Log.d("MainActivity","Response failed");
             }
         });
@@ -165,4 +232,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+
+    }
+
+
+    @Override
+    public void onPolylineClick(Polyline mPolylines) {
+
+    }
 }

@@ -11,6 +11,13 @@ public class Images {
     Urls urls;
     Location location;
 
+    public String getLatitude() {
+        return location.getPosition().getLatitude();
+    }
+    public String getLongitude() {
+        return location.getPosition().getLongitude();
+    }
+
     public String getURL(){return urls.getSmall();}
 
     public String getId() {
@@ -55,74 +62,3 @@ public class Images {
 }
 
 
-class Urls {
-    String small;
-
-    public String getSmall() {
-        return small;
-    }
-
-    public void setSmall(String small) {
-        this.small = small;
-    }
-}
-
-class Location{
-    String title;
-    String city;
-    String country;
-    Position position;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-}
-
-class Position{
-    String latitude;
-    String longitude;
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-}
