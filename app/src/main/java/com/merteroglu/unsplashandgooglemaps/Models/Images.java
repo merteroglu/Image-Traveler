@@ -10,6 +10,15 @@ public class Images {
     String description;
     Urls urls;
     Location location;
+    String created_at;
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
 
     public String getLatitude() {
         return location.getPosition().getLatitude();

@@ -23,11 +23,12 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_marginTop="83dp"
+            android:background="@color/colorNavigationBg"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -38,7 +39,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="En güzel yerler"
                 android:textAlignment="center"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorWhite"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -51,6 +52,16 @@
             </android.support.v4.view.ViewPager>
 
 
+            <TextView
+                android:id="@+id/txtTarih"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:textColor="@color/colorWhite"
+                android:text="05.12.2017"/>
+
             <RelativeLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -58,24 +69,27 @@
 
                 <Button
                     android:id="@+id/btnPrev"
+                    style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="60dp"
                     android:layout_height="40dp"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"
                     android:text="Prev"
+                    android:textColor="@android:color/black"
                     android:textSize="12sp" />
 
                 <Button
                     android:id="@+id/btnNext"
+                    style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="60dp"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5dp"
                     android:text="Next"
+                    android:textColor="@android:color/black"
                     android:textSize="12sp" />
 
             </RelativeLayout>
-
 
 
 
@@ -84,14 +98,28 @@
                 android:layout_height="2dp"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal"
-                android:background="#393939"/>
+                android:background="#c2c2c2"/>
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtIcerik"
                 android:layout_width="256dp"
                 android:layout_height="wrap_content"
+                android:minHeight="250dp"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempus turpis et auctor sodales. Aliquam vel elit magna. Donec posuere porta posuere. Quisque metus massa, viverra nec ex in, cursus porta velit. Sed lobortis rhoncus elit et mattis. Praesent in ultricies nibh, vel tempus ex. Fusce sed imperdiet lorem, non tincidunt lectus. Curabitur pretium facilisis purus, sed auctor diam. Proin libero nulla, eleifend ac fringilla id, aliquet at neque. "
+                android:textColor="@color/colorWhite"
                 android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
                 />
 
         </LinearLayout>
