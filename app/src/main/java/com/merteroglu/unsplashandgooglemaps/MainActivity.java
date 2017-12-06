@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDialog.setMessage("Loading ...");
         mDialog.show();
 
-        services.getImagesList(20).enqueue(new Callback<List<Images>>() {
+        services.getImagesList(30).enqueue(new Callback<List<Images>>() {
             @Override
             public void onResponse(Call<List<Images>> call, Response<List<Images>> response) {
 
