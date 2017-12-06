@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     if (i == imageList.size() - 2) {
                         Polyline linex = mMap.addPolyline(new PolylineOptions()
-                                .add(new LatLng(lat2 ,lng2 ), new LatLng(Double.parseDouble(imageList.get(0).getLocation().getPosition().getLatitude()), Double.parseDouble(imageList.get(i + 1).getLocation().getPosition().getLongitude())))
+                                .add(new LatLng(lat2 ,lng2 ), new LatLng(Double.parseDouble(imageList.get(0).getLocation().getPosition().getLatitude()), Double.parseDouble(imageList.get(0).getLocation().getPosition().getLongitude())))
                                 .width(4)
                                 .color(Color.BLACK));
                     }
