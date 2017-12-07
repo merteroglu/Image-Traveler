@@ -2,6 +2,8 @@ package com.merteroglu.unsplashandgooglemaps;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
@@ -40,11 +42,11 @@ public class ViewPageAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         layoutInflater = (LayoutInflater) activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = layoutInflater.inflate(R.layout.viewpager_item,container,false);
 
-        ImageView image;
+        final ImageView image;
         image = itemView.findViewById(R.id.imgAna);
         DisplayMetrics dis = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dis);
@@ -52,6 +54,16 @@ public class ViewPageAdapter extends PagerAdapter {
         int width = dis.widthPixels;
         image.setMinimumHeight(height);
         image.setMinimumWidth(width);
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(activity,ShowImageFull.class);
+                i.putExtra("link",images.get(position).getURL());
+                i.putExtra("color",images.get(position).getColor());
+                activity.startActivity(i);
+            }
+        });
 
         try{
             Picasso.with(activity.getApplicationContext())
@@ -70,6 +82,5 @@ public class ViewPageAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         ((ViewPager) container).removeView((View) object);
     }
-
 
 }

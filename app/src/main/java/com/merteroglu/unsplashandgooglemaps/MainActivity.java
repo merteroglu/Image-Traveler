@@ -19,6 +19,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -77,14 +78,44 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                if(slideOffset == 1f){
+                    drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+                }
+                super.onDrawerSlide(drawerView,slideOffset);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                if(newState == DrawerLayout.STATE_DRAGGING){
+                    Log.d("Dragging","State changed");
+                }
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                super.onDrawerClosed(drawerView);
+            }
+
+
+
+        };
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+
 
         imgAna = findViewById(R.id.imgAna);
         txtIcerik = findViewById(R.id.txtIcerik);
@@ -135,23 +166,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         getImages();
 
 
-        Button btnTest = findViewById(R.id.testButton);
-
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getImages();
-
-
-            }
-        });
-
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
 
+      viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+          @Override
+          public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+
+          }
+
+          @Override
+          public void onPageSelected(int position) {
+              pagerIndex = position;
+              txtIcerik.setText(imageList.get(pagerIndex).getDescription());
+              txtTarih.setText(imageList.get(pagerIndex).getCreated_at().substring(0,10));
+              txtTitle.setText(imageList.get(pagerIndex).getLocation().getTitle());
+              Double lat = Double.parseDouble(imageList.get(pagerIndex).getLocation().getPosition().getLatitude());
+              Double lng = Double.parseDouble(imageList.get(pagerIndex).getLocation().getPosition().getLongitude());
+              updateMaps(new LatLng(lat,lng));
+          }
+
+          @Override
+          public void onPageScrollStateChanged(int state) {
+
+          }
+      });
 
     }
 
